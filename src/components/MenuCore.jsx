@@ -18,6 +18,11 @@ const items = [
     key: "login",
     icon: <UserOutlined />,
   },
+  {
+    label: <Link to="/users">Users</Link>,
+    key: "users",
+    icon: <UserOutlined />,
+  },
 ];
 const MenuCore = () => {
   const [current, setCurrent] = useState("mail");
