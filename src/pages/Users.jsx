@@ -1,29 +1,49 @@
-//import * as ReactDOM from "react-dom/client";
-//import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Table } from "antd";
 
-
-//import {
-//    createBrowserRouter,
-//} from "react-router-dom";
-
-
-
-const github = 'https://api.github.com/users/MarcosG66'
-const server = 'http://localhost:3000/users'
-
+//Tabela de usuarios mostrando id, nome e nome de usuario
 function Users() {
+    //setando estados
+    const [users, setUsers] = useState([]);
 
+    //função assincrona em favor do await da request
+    async function findUsers() {
+        const resposta = await axios.get("https://jrxhr5-3000.csb.app/users");
 
-    axios.get('http://localhost:3000/users')
-        .then(function (response) {
-            console.log(response.data)
-        });
+        setUsers(resposta.data);
+    }
 
+    useEffect(() => {
+        findUsers();
+    }, []);
+
+    //colunas pra tabela do antd
+    const columns = [
+        //campo de id
+        {
+            title: "Id",
+            dataIndex: "id",
+            //linkar url a valor da tabela
+            render: (id) => <Link to={`/users/${id}`}>{id}</Link>,
+        },
+        //campo de nome
+        {
+            title: "Name",
+            dataIndex: "name",
+        },
+        //campo de username
+        {
+            title: "Username",
+            dataIndex: "username",
+        },
+    ];
 
     return (
-        <h1>{response.data}</h1>
-    )
+        //tabela antd
+        <Table dataSource={users} columns={columns} bordered />
+    );
 }
 
-export default Users
+export default Users;
